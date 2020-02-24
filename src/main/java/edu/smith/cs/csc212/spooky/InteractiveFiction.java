@@ -3,9 +3,8 @@ package edu.smith.cs.csc212.spooky;
 import java.util.List;
 
 /**
- * This is our main class for SpookyMansion.
- * It interacts with a GameWorld and handles user-input.
- * It can play any game, really.
+ * This is our main class for SpookyMansion. It interacts with a GameWorld and
+ * handles user-input. It can play any game, really.
  *
  * @author jfoley
  *
@@ -14,20 +13,25 @@ public class InteractiveFiction {
 
 	/**
 	 * This method actually plays the game.
+	 * 
 	 * @param input - a helper object to ask the user questions.
-	 * @param game - the places and exits that make up the game we're playing.
+	 * @param game  - the places and exits that make up the game we're playing.
 	 * @return where - the place the player finished.
 	 */
 	static String runGame(TextInput input, GameWorld game) {
 		// This is the current location of the player (initialize as start).
 		Player player = new Player(game.getStart());
 
+		// need help or not? only appear once.
+		System.out.println("type \"help\" to get instruction.\n");
+		
 		// Play the game until quitting.
-		// This is too hard to express here, so we just use an infinite loop with breaks.
+		// This is too hard to express here, so we just use an infinite loop with
+		// breaks.
 		while (true) {
 			// Print the description of where you are.
 			Place here = game.getPlace(player.getPlace());
-			
+
 			System.out.println();
 			System.out.println("... --- ...");
 			System.out.println(here.getDescription());
@@ -40,9 +44,9 @@ public class InteractiveFiction {
 			// Show a user the ways out of this place.
 			List<Exit> exits = here.getVisibleExits();
 
-			for (int i=0; i<exits.size(); i++) {
+			for (int i = 0; i < exits.size(); i++) {
 				Exit e = exits.get(i);
-				System.out.println(" "+i+". " + e.getDescription());
+				System.out.println(" " + i + ". " + e.getDescription());
 			}
 
 			// Figure out what the user wants to do, for now, only "quit" is special.
@@ -56,7 +60,7 @@ public class InteractiveFiction {
 			// Do not uppercase action -- I have lowercased it.
 			String action = words.get(0).toLowerCase().trim();
 
-			if (action.equals("quit")) {
+			if (action.equals("quit") || action.equals("q") || action.equals("escape")) {
 				if (input.confirm("Are you sure you want to quit?")) {
 					// quit!
 					break;
@@ -65,6 +69,15 @@ public class InteractiveFiction {
 					continue;
 				}
 			}
+			
+			String instruction = "To quit game: type \"quit\", \"escape\", or \"q\"\n" +
+								 "To see the instruction again: type \"help\"\n" +
+								 "To another room: type in the number of the room you'd like to go";
+			if (action.equals("help")) {
+				System.out.println(instruction);
+				continue;
+			}
+			
 
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
@@ -94,6 +107,7 @@ public class InteractiveFiction {
 
 	/**
 	 * This is where we play the game.
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
