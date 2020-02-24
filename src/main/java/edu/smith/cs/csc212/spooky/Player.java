@@ -15,13 +15,15 @@ public class Player {
 	 * The ID of the Place object where the player is currently.
 	 */
 	private String place;
-	
+
 	/**
 	 * the player's memory
 	 */
 	private Set<String> visited;
+
 	/**
 	 * A player is created at the start of a game with just an initial place.
+	 * 
 	 * @param initialPlace - where do we start?
 	 */
 	public Player(String initialPlace) {
@@ -31,6 +33,7 @@ public class Player {
 
 	/**
 	 * Get access to the place instance variable from outside this class.
+	 * 
 	 * @return the id of the current location.
 	 */
 	public String getPlace() {
@@ -39,10 +42,25 @@ public class Player {
 
 	/**
 	 * Call this method when the player moves to a new place.
+	 * 
 	 * @param place - the place we are now located at.
 	 */
 	public void moveTo(String place) {
 		this.place = place;
+		
+	}
+	
+	/**
+	 * add the place into the player's memory
+	 */
+	public void saveMemory(String place) {
 		this.visited.add(place);
+	}
+
+	/**
+	 * @return the visited set.
+	 */
+	public Set<String> getVisited() {
+		return this.visited;
 	}
 }

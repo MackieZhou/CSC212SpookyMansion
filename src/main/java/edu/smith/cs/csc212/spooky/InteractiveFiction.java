@@ -1,6 +1,7 @@
 package edu.smith.cs.csc212.spooky;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * This is our main class for SpookyMansion. It interacts with a GameWorld and
@@ -23,8 +24,8 @@ public class InteractiveFiction {
 		Player player = new Player(game.getStart());
 
 		// need help or not? only appear once.
-		System.out.println("type \"help\" to get instruction.\n");
-		
+		System.out.println("Type \"help\" to get instruction.\n");
+
 		// Play the game until quitting.
 		// This is too hard to express here, so we just use an infinite loop with
 		// breaks.
@@ -35,6 +36,13 @@ public class InteractiveFiction {
 			System.out.println();
 			System.out.println("... --- ...");
 			System.out.println(here.getDescription());
+
+			// check if you've been here before
+			Set<String> visited = player.getVisited();
+			if (visited.contains(here.getId())) {
+				System.out.println(">>> This place look familiar...");
+			}
+			player.saveMemory(player.getPlace());
 
 			// Game over after print!
 			if (here.isTerminalState()) {
@@ -69,15 +77,15 @@ public class InteractiveFiction {
 					continue;
 				}
 			}
-			
-			String instruction = "To quit game: type \"quit\", \"escape\", or \"q\"\n" +
-								 "To see the instruction again: type \"help\"\n" +
-								 "To another room: type in the number of the room you'd like to go";
+
+			// To get help playing the game
+			String instruction = "\nTo quit game: type \"quit\", \"escape\", or \"q\"\n"
+					+ "To see the instruction again: type \"help\"\n"
+					+ "To another room: type in the number of the room you'd like to go";
 			if (action.equals("help")) {
 				System.out.println(instruction);
 				continue;
 			}
-			
 
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
