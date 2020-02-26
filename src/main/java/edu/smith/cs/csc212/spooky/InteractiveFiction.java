@@ -24,7 +24,7 @@ public class InteractiveFiction {
 		Player player = new Player(game.getStart());
 
 		// need help or not? only appear once.
-		System.out.println("Type \"help\" to get instruction.\n");
+		System.out.println("Type \"help\" to get instruction.");
 
 		// Play the game until quitting.
 		// This is too hard to express here, so we just use an infinite loop with
@@ -51,15 +51,15 @@ public class InteractiveFiction {
 				break;
 			}
 
-			// Show a user the ways out of this place.
-			List<Exit> exits = here.getVisibleExits();
+			// Show a user the visible ways out of this place.
+			List<Exit> visExits = here.getVisibleExits();
 
-			for (int i = 0; i < exits.size(); i++) {
-				Exit e = exits.get(i);
+			for (int i = 0; i < visExits.size(); i++) {
+				Exit e = visExits.get(i);
 				System.out.println(" " + i + ". " + e.getDescription());
 			}
 
-			// Figure out what the user wants to do, for now, only "quit" is special.
+			// Figure out what the user wants to do
 			List<String> words = input.getUserWords("?");
 			if (words.size() > 1) {
 				System.out.println("Only give the system 1 word at a time!");
@@ -89,6 +89,27 @@ public class InteractiveFiction {
 				continue;
 			}
 
+			// To check if the user is searching for invisible exits
+			// All ways out of this place, including the hidden ones
+			List<Exit> allExits = here.getExits();
+//			System.out.println(here.getExits());
+
+			if (action.equals("search")) {
+				for (int i = 0; i < allExits.size(); i++) {
+					Exit e = allExits.get(i);
+//					System.out.println(e.isSecret);
+					if (e instanceof SecretExit) {
+						e.search();
+					}
+//					System.out.println(e.isSecret + "\n");
+				}
+				continue;
+			}
+
+//			// debug
+//			List<Exit> newVisibleExits = here.getVisibleExits();
+//			System.out.println(newVisibleExits);
+
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
 			try {
@@ -98,13 +119,13 @@ public class InteractiveFiction {
 				continue;
 			}
 
-			if (exitNum < 0 || exitNum >= exits.size()) {
+			if (exitNum < 0 || exitNum >= allExits.size()) {
 				System.out.println("I don't know what to do with that number!");
 				continue;
 			}
 
 			// Move to the room they indicated.
-			Exit destination = exits.get(exitNum);
+			Exit destination = allExits.get(exitNum);
 			if (destination.canOpen(player)) {
 				player.moveTo(destination.getTarget());
 			} else {

@@ -35,10 +35,11 @@ public class SpookyMansion implements GameWorld {
 		String EMOJI_SKULL = "\uD83D\uDC80";
 		Place closet = insert(Place.create("closet",
 				"On the wall is scratched a series of letters and a skull icon (" + EMOJI_SKULL + ").\n"
-						+ "North.. North.. East.. South.\n" + "What could it mean?\n"
+						+ "North..North..South..West..East..\n" + "What could it mean?\n"
 						+ "And there is a hole on the ceiling.\n" + "Where does the hole connect to?"));
 		closet.addExit(new Exit("entranceHall", "There is a brown door."));
-		closet.addExit(new Exit("basement", "There is a ladder connected to somewhere down there."));
+		closet.addExit(new SecretExit("basement",
+				"Wow, some newspaper covered a hole on the floor. There is a ladder connected to somewhere down there."));
 
 		Place basement = insert(
 				Place.create("basement", "You have found the basement of the mansion.\n" + "It is darker down here.\n"
@@ -46,7 +47,8 @@ public class SpookyMansion implements GameWorld {
 		basement.addExit(new Exit("entranceHall", "There are stairs leading up."));
 		basement.addExit(
 				new Exit("fallingPit", "There appears to be a pit in the center of the room you could climb into..."));
-		basement.addExit(new Exit("closet", "There is a ladder connected to somewhere up there."));
+		basement.addExit(new SecretExit("closet",
+				"Somthing covered a hole on the ceiling. There is a ladder connected to somewhere up there."));
 
 		Place fallingPit = insert(Place.create("fallingPit", "I don't know what you were thinking..."));
 		fallingPit.addExit(new Exit("labyrinth0", "Keep falling."));
@@ -106,8 +108,7 @@ public class SpookyMansion implements GameWorld {
 
 		String labyrinthDescription = "You see four hallways stretching out into the mist.\n"
 				+ "On the ground, there is tile shaped like a compass.";
-		Place labyrinth0 = insert(Place.create("labyrinth0",
-				labyrinthDescription + "\nThere are several letters on the wall. \"NNSWE\"\nWhat does that mean?"));
+		Place labyrinth0 = insert(Place.create("labyrinth0", labyrinthDescription));
 		Place labyrinth1 = insert(Place.create("labyrinth1", labyrinthDescription));
 		Place labyrinth2 = insert(Place.create("labyrinth2", labyrinthDescription));
 		Place labyrinth3 = insert(Place.create("labyrinth3", labyrinthDescription));

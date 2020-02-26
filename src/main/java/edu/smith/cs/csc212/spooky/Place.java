@@ -80,16 +80,24 @@ public class Place {
 
 	/**
 	 * Get a view of the exits from this Place, for navigation.
-	 * @return all the exits from this place.
+	 * @return all the visible exits from this place.
 	 */
 	public List<Exit> getVisibleExits() {
 		List<Exit> visible = new ArrayList<>();
 		for (Exit e : this.exits) {
-			if (!e.isSecret()) {
+			if (!e.isSecret) {
 				visible.add(e);
 			}
 		}
 		return visible;
+	}
+	
+	/**
+	 * Get a view of all exits from this Place, for navigation.
+	 * @return all the exits from this place.
+	 */
+	public List<Exit> getExits() {
+		return this.exits;
 	}
 	
 	/**
