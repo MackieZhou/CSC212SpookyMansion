@@ -41,10 +41,8 @@ public class InteractiveFiction {
 			Set<String> visited = player.getVisited();
 			if (visited.contains(here.getId())) {
 				here.visited = true;
-//				System.out.println(here.getId()+" visited = "+here.visited);
 				System.out.println(">>> This place look familiar...");
 			}
-			player.saveMemory(player.getPlace());
 
 			// Game over after print!
 			if (here.isTerminalState()) {
@@ -88,27 +86,18 @@ public class InteractiveFiction {
 				System.out.println(instruction);
 				continue;
 			}
-
+			
+			
+			// SecretExits are between closet&basement and secretRoom&basement
 			// To check if the user is searching for invisible exits
-			// All ways out of this place, including the hidden ones
 			List<Exit> allExits = here.getExits();
-//			System.out.println(here.getExits());
-
 			if (action.equals("search")) {
-				for (int i = 0; i < allExits.size(); i++) {
-					Exit e = allExits.get(i);
-//					System.out.println(e.isSecret);
-					if (e instanceof SecretExit) {
-						e.search();
-					}
-//					System.out.println(e.isSecret + "\n");
-				}
+				here.search();
 				continue;
 			}
-
-//			// debug
-//			List<Exit> newVisibleExits = here.getVisibleExits();
-//			System.out.println(newVisibleExits);
+			
+			// Now, all exceptions have been taken good care of, save the player's memory
+			player.saveMemory(player.getPlace());
 
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;

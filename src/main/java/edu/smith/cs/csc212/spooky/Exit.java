@@ -18,10 +18,10 @@ public class Exit {
 	 */
 	private String target;
 
-	/**
-	 * If this is a secret exit
-	 */
-	public boolean isSecret;
+//	/**
+//	 * If this is a secret exit
+//	 */
+//	public boolean isSecret;
 
 	/**
 	 * Create a new Exit.
@@ -32,7 +32,6 @@ public class Exit {
 	public Exit(String target, String description) {
 		this.description = description;
 		this.target = target;
-		this.isSecret = false;
 	}
 
 	/**
@@ -95,7 +94,7 @@ public class Exit {
 	 */
 	public boolean isSecret() {
 		// DO NOT CHANGE THIS METHOD. ONLY OVERRIDE IN A SUBCLASS.
-		return this.isSecret;
+		return false;
 	}
 
 	/**

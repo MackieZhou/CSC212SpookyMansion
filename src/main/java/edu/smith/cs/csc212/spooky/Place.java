@@ -85,7 +85,7 @@ public class Place {
 	public List<Exit> getVisibleExits() {
 		List<Exit> visible = new ArrayList<>();
 		for (Exit e : this.exits) {
-			if (!e.isSecret) {
+			if (!e.isSecret()) {
 				visible.add(e);
 			}
 		}
@@ -142,6 +142,15 @@ public class Place {
 			return this.id.equals(((Place) other).id);
 		}
 		return false;
+	}
+	
+	/**
+	 * 
+	 */
+	public void search() {
+		for (Exit e: this.exits) {
+			e.search();
+		}
 	}
 	
 }
