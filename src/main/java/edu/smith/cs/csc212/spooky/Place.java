@@ -28,6 +28,11 @@ public class Place {
 	private boolean terminal;
 	
 	/**
+	 * Whether this place is in the visited list
+	 */
+	public boolean visited;
+	
+	/**
 	 * Internal only constructor for Place. Use {@link #create(String, String)} or {@link #terminal(String, String)} instead.
 	 * @param id - the internal id of this place.
 	 * @param description - the user-facing description of the place.
@@ -38,6 +43,7 @@ public class Place {
 		this.description = description;
 		this.exits = new ArrayList<>();
 		this.terminal = terminal;
+		this.visited = false;
 	}
 	
 	/**

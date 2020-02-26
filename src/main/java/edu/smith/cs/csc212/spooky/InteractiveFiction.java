@@ -40,6 +40,8 @@ public class InteractiveFiction {
 			// check if you've been here before
 			Set<String> visited = player.getVisited();
 			if (visited.contains(here.getId())) {
+				here.visited = true;
+//				System.out.println(here.getId()+" visited = "+here.visited);
 				System.out.println(">>> This place look familiar...");
 			}
 			player.saveMemory(player.getPlace());
