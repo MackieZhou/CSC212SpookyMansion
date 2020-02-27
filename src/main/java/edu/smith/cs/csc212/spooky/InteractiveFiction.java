@@ -23,7 +23,7 @@ public class InteractiveFiction {
 		// This is the current location of the player (initialize as start).
 		Player player = new Player(game.getStart());
 
-		// This is the current time
+		// This is the time system for the game.
 		GameTime time = new GameTime();
 
 		// need help or not? only appear once.
@@ -35,7 +35,6 @@ public class InteractiveFiction {
 		while (true) {
 			// Print the description of where you are.
 			Place here = game.getPlace(player.getPlace());
-
 			System.out.println();
 			System.out.println("... --- ...");
 			System.out.println(here.getDescription(time));
@@ -64,7 +63,6 @@ public class InteractiveFiction {
 
 			// Show a user the visible ways out of this place.
 			List<Exit> visExits = here.getVisibleExits();
-
 			for (int i = 0; i < visExits.size(); i++) {
 				Exit e = visExits.get(i);
 				System.out.println(" " + i + ". " + e.getDescription());
@@ -81,6 +79,7 @@ public class InteractiveFiction {
 			// Do not uppercase action -- I have lowercased it.
 			String action = words.get(0).toLowerCase().trim();
 
+			// if the player wants tot quit the game.
 			if (action.equals("quit") || action.equals("q") || action.equals("escape")) {
 				if (input.confirm("Are you sure you want to quit?")) {
 					break;
@@ -89,7 +88,7 @@ public class InteractiveFiction {
 				}
 			}
 
-			// To get help playing the game
+			// if the player wants to get help playing the game
 			String instruction = "\nTo quit game: type \"quit\", \"escape\", or \"q\"\n"
 					+ "To see the instruction again: type \"help\"\n"
 					+ "To another room: type in the number of the room you'd like to go";
@@ -99,7 +98,7 @@ public class InteractiveFiction {
 			}
 
 			// SecretExits are between closet&basement and secretRoom&basement
-			// To check if the user is searching for invisible exits
+			// if the player wants to search for invisible exits
 			List<Exit> allExits = here.getExits();
 			if (action.equals("search")) {
 				here.search();
@@ -109,6 +108,7 @@ public class InteractiveFiction {
 			List<Exit> newVisExits = here.getVisibleExits();
 
 			// what have you collected?
+			// if the player wants to see their collection of stuff.
 			if (action.equals("stuff")) {
 				if (player.getCollection().size() == 0) {
 					System.out.println("You have nothing... keep working...");
@@ -118,29 +118,27 @@ public class InteractiveFiction {
 				continue;
 			}
 
-			// if the player wants to collect the key
+			// if the player wants to collect all the stuff at this place
 			if (action.equals("take")) {
 				if (here.getStuff().size() > 0) {
+					// if there are something here.
 					player.collect(here.getStuff());
 					here.taken();
 					continue;
 				} else {
+					// if there's nothing here.
 					System.out.println("There's nothing to take!!");
 					continue;
 				}
 			}
 
-			// if the player wants to collect the key
+			// if the player wants to rest for a while, time increases by 2 hrs
 			if (action.equals("rest")) {
 				time.increaseHour();
 				time.increaseHour();
 				continue;
 			}
-			
-			
-			
-			
-			
+
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
 			try {
@@ -169,12 +167,13 @@ public class InteractiveFiction {
 
 			// move the player to its destination
 			if (destination.canOpen(player)) {
-				// Now, save the player's memory before move
+				// save the player's memory before move
 				player.saveMemory(player.getPlace());
 				// move
 				player.moveTo(destination.getTarget());
 				time.increaseHour();
 			} else {
+				// if the destination is locked and the player doesn't have the key.
 				System.out.println("You cannot unlock that right now. Maybe with a key?");
 				continue;
 			}

@@ -22,7 +22,7 @@ public class Player {
 	 * the player's memory
 	 */
 	private Set<String> visited;
-	
+
 	/**
 	 * things the player has collected
 	 */
@@ -47,7 +47,12 @@ public class Player {
 	public String getPlace() {
 		return place;
 	}
-	
+
+	/**
+	 * getter method for the things the player has collected up till now
+	 * 
+	 * @return collection - things you have collected
+	 */
 	public List<String> getCollection() {
 		return this.collection;
 	}
@@ -59,9 +64,8 @@ public class Player {
 	 */
 	public void moveTo(String place) {
 		this.place = place;
-		
 	}
-	
+
 	/**
 	 * add the place into the player's memory
 	 */
@@ -70,15 +74,18 @@ public class Player {
 	}
 
 	/**
+	 * getter method for the visited set
+	 * 
 	 * @return the visited set.
 	 */
 	public Set<String> getVisited() {
 		return this.visited;
 	}
-	
+
 	/**
+	 * collect all the things here at this place
 	 * 
-	 * @param list -- the thing you want to take
+	 * @param list -- things at this place
 	 */
 	public void collect(List<String> list) {
 		this.collection.addAll(list);

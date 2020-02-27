@@ -24,16 +24,17 @@ public class Place {
 	 */
 	private String description;
 	/**
+	 * What to tell the player about this place in the night.
+	 */
+	private String nightDescription;
+	/**
 	 * Whether reaching this place ends the game.
 	 */
 	private boolean terminal;
-
 	/**
 	 * all the stuff you may pick up at this place.
 	 */
 	private List<String> stuff;
-
-	private String nightDescription;
 
 	/**
 	 * Internal only constructor for Place. Use {@link #create(String, String)} or
@@ -125,6 +126,11 @@ public class Place {
 		return this.exits;
 	}
 
+	/**
+	 * getter methods for the list of stuff that is stored here
+	 * 
+	 * @return this.stuff
+	 */
 	public List<String> getStuff() {
 		return this.stuff;
 	}
@@ -141,6 +147,11 @@ public class Place {
 		return new Place(id, description, null, true);
 	}
 
+	/**
+	 * Add thing to the stuff list associated with this place
+	 * 
+	 * @param thing - the thing you want to add
+	 */
 	public void addStuff(String thing) {
 		this.stuff.add(thing);
 	}
@@ -182,7 +193,7 @@ public class Place {
 	}
 
 	/**
-	 * 
+	 * search if there are SecretExits at this place.
 	 */
 	public void search() {
 		for (Exit e : this.exits) {

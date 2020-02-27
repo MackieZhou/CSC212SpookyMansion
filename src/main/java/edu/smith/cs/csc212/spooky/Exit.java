@@ -18,11 +18,6 @@ public class Exit {
 	 */
 	private String target;
 
-//	/**
-//	 * If this is a secret exit
-//	 */
-//	public boolean isSecret;
-
 	/**
 	 * Create a new Exit.
 	 * 
@@ -69,7 +64,7 @@ public class Exit {
 	/**
 	 * This is a useful definition of being the same.
 	 * 
-	 * @param other - another exit.
+	 * @param Exit other - another exit.
 	 * @return if they go to the same place.
 	 */
 	public boolean goesToSamePlace(Exit other) {
@@ -78,6 +73,8 @@ public class Exit {
 
 	/**
 	 * The other half of hashCode that lets us put it in a HashMap or HashSet.
+	 * 
+	 * @return boolean -- if they equal
 	 */
 	public boolean equals(Object other) {
 		if (other instanceof Exit) {
