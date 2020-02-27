@@ -40,9 +40,11 @@ public class InteractiveFiction {
 			// check if you've been here before
 			Set<String> visited = player.getVisited();
 			if (visited.contains(here.getId())) {
-				here.visited = true;
 				System.out.println(">>> This place look familiar...");
 			}
+			
+			// Also tell the player what's here
+			here.printAllStuff();
 
 			// Game over after print!
 			if (here.isTerminalState()) {
@@ -70,10 +72,8 @@ public class InteractiveFiction {
 
 			if (action.equals("quit") || action.equals("q") || action.equals("escape")) {
 				if (input.confirm("Are you sure you want to quit?")) {
-					// quit!
 					break;
 				} else {
-					// go to the top of the game loop!
 					continue;
 				}
 			}
@@ -86,8 +86,7 @@ public class InteractiveFiction {
 				System.out.println(instruction);
 				continue;
 			}
-			
-			
+
 			// SecretExits are between closet&basement and secretRoom&basement
 			// To check if the user is searching for invisible exits
 			List<Exit> allExits = here.getExits();
@@ -96,9 +95,36 @@ public class InteractiveFiction {
 				continue;
 			}
 			
+			// what have you collected?
+			if (action.equals("stuff")) {
+				if (player.getCollection().size()==0) {
+					System.out.println("You have nothing... keep working...");
+				} else {
+					System.out.println("You have " + player.getCollection());
+				}
+				continue;
+			}
+			
+			// if the player wants to collect the key
+			if (action.equals("take")) {
+				if (here.getStuff().size()>0) {
+					player.collect(here.getStuff());
+					here.taken();
+					continue;
+				} else {
+					System.out.println("There's nothing to take!!");
+					continue;
+				}
+			}
+
 			// Now, all exceptions have been taken good care of, save the player's memory
 			player.saveMemory(player.getPlace());
 
+			
+			
+			
+			
+			
 			// From here on out, what they typed better be a number!
 			Integer exitNum = null;
 			try {
@@ -115,10 +141,21 @@ public class InteractiveFiction {
 
 			// Move to the room they indicated.
 			Exit destination = allExits.get(exitNum);
+			
+			// check is the player has the key to unlock the destination
+			if (destination instanceof LockedExit) {
+				String needed = ((LockedExit) destination).getKey();
+				if (player.getCollection().contains(needed)) {
+					((LockedExit) destination).unlock();
+				}
+			}
+			
+			// Time to move
 			if (destination.canOpen(player)) {
 				player.moveTo(destination.getTarget());
 			} else {
-				// TODO: some kind of message about it being locked?
+				System.out.println("You cannot unlock that right now. Maybe with a key?");
+				continue;
 			}
 		}
 

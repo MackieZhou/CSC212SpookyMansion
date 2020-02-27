@@ -27,9 +27,11 @@ public class SpookyMansion implements GameWorld {
 		Place entranceHall = insert(
 				Place.create("entranceHall", "You are in the grand entrance hall of a large building.\n"
 						+ "The front door is locked. How did you get here?"));
+		entranceHall.addStuff("an old book");
+		entranceHall.addStuff("a crystal ball");
 		entranceHall.addExit(new Exit("basement", "There are stairs leading down."));
 		entranceHall.addExit(new Exit("attic", "There are stairs leading up."));
-		entranceHall.addExit(new Exit("kitchen", "There is a red door."));
+		entranceHall.addExit(new LockedExit("kitchen", "There is a locked red door.", "a small red key"));
 		entranceHall.addExit(new Exit("closet", "There is a brown door."));
 
 		String EMOJI_SKULL = "\uD83D\uDC80";
@@ -67,6 +69,7 @@ public class SpookyMansion implements GameWorld {
 		attic2.addExit(new Exit("dumbwaiter", "There is a dumbwaiter."));
 
 		Place balcony = insert(Place.create("balcony", "The night is pitch-black."));
+		balcony.addStuff("a small red key");
 		balcony.addExit(new Exit("attic2", "Return to the attic."));
 		balcony.addExit(new Exit("jump", "You could jump off, but you can't see the ground."));
 
@@ -74,7 +77,9 @@ public class SpookyMansion implements GameWorld {
 
 		Place kitchen = insert(
 				Place.create("kitchen", "You've found the kitchen. You smell old food and some kind of animal."));
-		kitchen.addExit(new Exit("entranceHall", "There is a red door."));
+		kitchen.addStuff("a dirty towel");
+		kitchen.addStuff("an old knife");
+		kitchen.addExit(new LockedExit("entranceHall", "There is a locked red door.", "a small red key"));
 		kitchen.addExit(new Exit("dumbwaiter", "There is a dumbwaiter."));
 
 		Place dumbwaiter = insert(Place.create("dumbwaiter", "You crawl into the dumbwaiter. What are you doing?"));

@@ -1,6 +1,8 @@
 package edu.smith.cs.csc212.spooky;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -20,6 +22,11 @@ public class Player {
 	 * the player's memory
 	 */
 	private Set<String> visited;
+	
+	/**
+	 * things the player has collected
+	 */
+	private List<String> collection;
 
 	/**
 	 * A player is created at the start of a game with just an initial place.
@@ -29,6 +36,7 @@ public class Player {
 	public Player(String initialPlace) {
 		this.place = initialPlace;
 		this.visited = new HashSet<>();
+		this.collection = new ArrayList<>();
 	}
 
 	/**
@@ -38,6 +46,10 @@ public class Player {
 	 */
 	public String getPlace() {
 		return place;
+	}
+	
+	public List<String> getCollection() {
+		return this.collection;
 	}
 
 	/**
@@ -62,5 +74,13 @@ public class Player {
 	 */
 	public Set<String> getVisited() {
 		return this.visited;
+	}
+	
+	/**
+	 * 
+	 * @param list -- the thing you want to take
+	 */
+	public void collect(List<String> list) {
+		this.collection.addAll(list);
 	}
 }

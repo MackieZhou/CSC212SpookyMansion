@@ -28,9 +28,9 @@ public class Place {
 	private boolean terminal;
 	
 	/**
-	 * Whether this place is in the visited list
+	 * all the stuff you may pick up at this place.
 	 */
-	public boolean visited;
+	private List<String> stuff;
 	
 	/**
 	 * Internal only constructor for Place. Use {@link #create(String, String)} or {@link #terminal(String, String)} instead.
@@ -43,7 +43,7 @@ public class Place {
 		this.description = description;
 		this.exits = new ArrayList<>();
 		this.terminal = terminal;
-		this.visited = false;
+		this.stuff = new ArrayList<>();
 	}
 	
 	/**
@@ -77,6 +77,15 @@ public class Place {
 	public String getDescription() {
 		return this.description;
 	}
+	
+	/**
+	 * print all the stuff here
+	 */
+	public void printAllStuff() {
+		for (String s: this.stuff) {
+			System.out.println("=== Ther is " + s + " here.");
+		}
+	}
 
 	/**
 	 * Get a view of the exits from this Place, for navigation.
@@ -100,6 +109,10 @@ public class Place {
 		return this.exits;
 	}
 	
+	public List<String> getStuff() {
+		return this.stuff;
+	}
+	
 	/**
 	 * This is a terminal location (good or bad).
 	 * @param id - this is the id of the place (for creating {@link Exit} objects that go here).
@@ -108,6 +121,10 @@ public class Place {
 	 */
 	public static Place terminal(String id, String description) {
 		return new Place(id, description, true);
+	}
+	
+	public void addStuff(String thing) {
+		this.stuff.add(thing);
 	}
 	
 	/**
@@ -153,4 +170,11 @@ public class Place {
 		}
 	}
 	
+	/**
+	 * if the stuff stored here is taken by the player, remove all things
+	 */
+	public void taken() {
+		this.stuff.removeAll(this.stuff);
+	}
+		
 }

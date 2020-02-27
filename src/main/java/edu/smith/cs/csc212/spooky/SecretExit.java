@@ -21,10 +21,5 @@ public class SecretExit extends Exit {
 	public void search() {
 		this.isSecret = false;
 	}
-	
-//	@Override
-//	public boolean canOpen(Player player) {
-//		return true;
-//	}
 
 }
