@@ -23,6 +23,9 @@ public class InteractiveFiction {
 		// This is the current location of the player (initialize as start).
 		Player player = new Player(game.getStart());
 
+		// This is the current time
+		GameTime time = new GameTime();
+
 		// need help or not? only appear once.
 		System.out.println("Type \"help\" to get instruction.");
 
@@ -35,19 +38,27 @@ public class InteractiveFiction {
 
 			System.out.println();
 			System.out.println("... --- ...");
-			System.out.println(here.getDescription());
+			System.out.println(here.getDescription(time));
 
 			// check if you've been here before
 			Set<String> visited = player.getVisited();
 			if (visited.contains(here.getId())) {
 				System.out.println(">>> This place look familiar...");
 			}
-			
+
 			// Also tell the player what's here
 			here.printAllStuff();
 
+			// print the current time
+			if (time.isNightTime()) {
+				System.out.println("+++ Current time: " + time.getHour() + time.amOrpm() + ". It's dark out there.");
+			} else {
+				System.out.println("+++ Current time: " + time.getHour() + time.amOrpm() + ". The sun has risen.");
+			}
+
 			// Game over after print!
 			if (here.isTerminalState()) {
+				System.out.println("\nYou have spent " + time.getTotal() + " hours on this game!");
 				break;
 			}
 
@@ -94,20 +105,22 @@ public class InteractiveFiction {
 				here.search();
 				continue;
 			}
-			
+			// update the list of visible exits
+			List<Exit> newVisExits = here.getVisibleExits();
+
 			// what have you collected?
 			if (action.equals("stuff")) {
-				if (player.getCollection().size()==0) {
+				if (player.getCollection().size() == 0) {
 					System.out.println("You have nothing... keep working...");
 				} else {
 					System.out.println("You have " + player.getCollection());
 				}
 				continue;
 			}
-			
+
 			// if the player wants to collect the key
 			if (action.equals("take")) {
-				if (here.getStuff().size()>0) {
+				if (here.getStuff().size() > 0) {
 					player.collect(here.getStuff());
 					here.taken();
 					continue;
@@ -117,9 +130,12 @@ public class InteractiveFiction {
 				}
 			}
 
-			// Now, all exceptions have been taken good care of, save the player's memory
-			player.saveMemory(player.getPlace());
-
+			// if the player wants to collect the key
+			if (action.equals("rest")) {
+				time.increaseHour();
+				time.increaseHour();
+				continue;
+			}
 			
 			
 			
@@ -134,25 +150,30 @@ public class InteractiveFiction {
 				continue;
 			}
 
-			if (exitNum < 0 || exitNum >= allExits.size()) {
+			if (exitNum < 0 || exitNum >= newVisExits.size()) {
 				System.out.println("I don't know what to do with that number!");
 				continue;
 			}
 
 			// Move to the room they indicated.
 			Exit destination = allExits.get(exitNum);
-			
+
 			// check is the player has the key to unlock the destination
+			// the red door(entranceHall to kitchen) is originally locked
 			if (destination instanceof LockedExit) {
 				String needed = ((LockedExit) destination).getKey();
 				if (player.getCollection().contains(needed)) {
 					((LockedExit) destination).unlock();
 				}
 			}
-			
-			// Time to move
+
+			// move the player to its destination
 			if (destination.canOpen(player)) {
+				// Now, save the player's memory before move
+				player.saveMemory(player.getPlace());
+				// move
 				player.moveTo(destination.getTarget());
+				time.increaseHour();
 			} else {
 				System.out.println("You cannot unlock that right now. Maybe with a key?");
 				continue;
